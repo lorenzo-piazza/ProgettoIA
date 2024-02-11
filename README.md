@@ -1,3 +1,4 @@
+
 # ProgettoIA
 ## Componenti del gruppo
 - **Masri Omar** (879237)
@@ -23,8 +24,7 @@ Se un'euristica è **consistente** allora trova la soluzione ottimale.
 ```math
  c(k, a, k')= \begin{cases} 0 & \ (\circ) \\ 1 & \  (( \uparrow ) \lor  (\downarrow) \lor (\leftarrow) \lor (\rightarrow)) \ senza\ salti \\ 2 & \  (( \uparrow ) \lor  (\downarrow) \lor (\leftarrow) \lor (\rightarrow)) \ effettuando\ un \ salto \end{cases} 
  ```
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;E un'euristica come la **distanza di Manhattan** tra la posizione attuale di &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;del veicolo e la sua destinazione finale. Ciò fornisce una stima del costo &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;minimo per spostare ogni veicolo alla sua posizione finale. Otteniamo &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;così un'euristica **consistente** per il problema dato e quindi **ammissibile**
-		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Quindi dato $k=(x_1, y_1)$ e dato il goal $g'= (x_2, y_2)$ relativo al &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;singolo obiettivo nello stato goal $g$ $$h(k) = \lvert x_1 - x_2 \lvert +\lvert y_1-y_2 \lvert $$
+E un'euristica come la **distanza di Manhattan** tra la posizione attuale di del veicolo e la sua destinazione finale. Ciò fornisce una stima del costo minimo per spostare ogni veicolo alla sua posizione finale. Otteniamo così un'euristica **consistente** per il problema dato e quindi **ammissibile**. Quindi dato $k=(x_1, y_1)$ e dato il goal $g'= (x_2, y_2)$ relativo al singolo obiettivo nello stato goal $g$ $$h(k) = \lvert x_1 - x_2 \lvert +\lvert y_1-y_2 \lvert $$
 
 - Costruire un euristica complessiva combinando quelle dei singoli veicoli
 	- Per definire un'euristica complessiva $H$ basta sommare le euristiche focalizzate sui singoli veicoli: $H:S \longrightarrow \mathbb{N}$ $$H(s) = \sum_{i =1}^{M}{h(s_i)}\ \ t.c.\ s_i\ posizione\ del\ veicolo\ i$$
@@ -55,14 +55,15 @@ Se un'euristica è **consistente** allora trova la soluzione ottimale.
 	- I veicoli devono essere spostati nella fila superiore ma in ordine inverso; quindi il veicolo i che inizia in (i,1) deve finire in (n−i+1,n)
 - Costo Azioni $C : S \times \Omega \times S \longrightarrow \mathbb{N}$
 	- definiamo la funzione costo $C$ come: 
-$$
+```math
  C(s, a, s')= \sum_{i=1}^{M}{c(k_i, a, k_i')} \ t.c. \ k_i \in s \ \wedge \ k_i' \in s'
- $$
+ ```
 DOMANDE
 1. non riga inferiore ma prima colonna
 2. come gestiamo il costo del salto di un veicolo 1 o 2? come gestiamo il costo di stare fermi?
 
 ROBE IN PIù
 Sistema definizione di C
+Sistemare tab
 Trovare un modo per fare il sistema sopra nel costo
 Spiegare distanza di manhattan
