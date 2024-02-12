@@ -2,7 +2,7 @@
 
 from utility import *
 
-class Astar():
+class IDAstar():
     def H(self, nodo):
         pos = nodo.positions;
         return sum((self.distance(x, i+1) for (i, x) in enumerate(pos)));

@@ -3,31 +3,25 @@
 from Astar import *
 import numpy as np;
 
-
-def print_pos(pos, n):
-    arr = np.zeros((n,n))
-    count = 0;
-    for i in pos:
-        count += 1
-        (x,y) = i;
-        arr[x][y] = count;
-    print(arr);
-    print("")
-
 print(grid, "\n");
 
-position = [(1,1), (1,0), (0,1)];
+position = [(0,0), (1,0), (2,0), (3,0), (4,0), (5,0)];
 
 print(len(position))
 
-nodo = Node(position);
+nodo = Node(tuple(position), None);
 
-nodo.add_neigbors(grid, n , M)
+ss = Astar(nodo, Manhattan_distance, grid , n, M)
 
-print(len(nodo.neighbors));
+result = ss.search();
 
-print(nodo.neighbors);
+print("++++ \n", result, "\n");
 
+print_pos(result.positions, n);
 
-for x in nodo.neighbors:
-    print_pos(x, n)
+p = result;
+
+while not p.parent is None:
+    p = p.parent;
+    print("----- \n", p);
+    print_pos(p.positions, n)
