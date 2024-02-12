@@ -1,4 +1,3 @@
-
 # ProgettoIA
 ## Componenti del gruppo
 - **Masri Omar** (879237)
@@ -14,8 +13,12 @@
 		3. A Sinistra	($\leftarrow$)
 		4. A Destra		($\rightarrow$)
 		5. Rimanere Fermi	($\circ$)
+		6. In Alto		($\uparrow \uparrow$)
+		7. In Basso		($\downarrow \downarrow$)
+		8. A Sinistra	($\leftarrow \leftarrow$)
+		9. A Destra		($\rightarrow \rightarrow$)
 
-		quindi questo risulta: $$5^M$$
+		quindi questo risulta: $$5^M o\;  9^M$$
 - Definire un’euristica ammissibile focalizzata sul singolo obiettivo
 	- Un'euristica $h$ **ammissibile** è un'euristica che non sovrastima mai il costo atteso, ed è quindi ottimista. 
 	- Un'euristica $h$ è **consistente** se vale la seguente disuguaglianza triangolare: per ogni nodo $k$ e ogni suo successore $k'$ generato dall'azione $a$ abbiamo: $$h(k) \leq c(k, a, k') + h(k')$$ quindi ogni euristica **consistente** è **ammissibile** (ma non viceversa).
@@ -61,6 +64,8 @@ E un'euristica come la **distanza di Manhattan** tra la posizione attuale di del
 DOMANDE
 1. non riga inferiore ma prima colonna
 2. come gestiamo il costo del salto di un veicolo 1 o 2? come gestiamo il costo di stare fermi?
+3. Possono scambiarsi?
+4. fai domanda su branching factor e effective branching factor
 
 ROBE IN PIù
 Sistema definizione di C
