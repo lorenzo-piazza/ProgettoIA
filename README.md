@@ -65,7 +65,7 @@ E un'euristica come la **distanza di Manhattan** tra la posizione attuale di del
 ## Algoritmi
 Dati $b$ il branching factor, $d$ il la profondità massima e $\beta$ la beam width
 | |A*|IDA*|Beam Search|
-|:---:|:---:|:---:|:---:|:---:|
+|:---:|:---:|:---:|:---:|
 | Spazio | $O(b^d)$|$O(d)$|$O(\beta)$|
 | Tempo | $O(b^d)$|$O(b^d)$|$O(\beta^d)$|
 | Ottimale | $\checkmark$|$\checkmark$|✘|
