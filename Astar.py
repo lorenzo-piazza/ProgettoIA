@@ -22,14 +22,14 @@ class Astar():
         while not self.frontier.empty():
             self.nodo = self.frontier.get();
 
-            print(self.frontier.qsize());
+            #print(self.frontier.qsize());
             #print(self.nodo)
             #print_pos(self.nodo.positions, self.n);
-            #time.sleep(1)
+            #time.sleep(0.5)
             if(self.nodo.h == 0):   ## GOAL
                 return self.nodo;
             else:
-                self.nodo.add_neighbors(self.grid, self.n, self.M);
+                self.nodo.add_neighbors(self.n, self.M);
                 for x in self.nodo.neighbors:
                     if(x.positions not in self.reached):
                         self.reached.add(x.positions)
