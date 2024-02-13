@@ -35,15 +35,17 @@ class PQueue():
 class Beam():
     def H(self, nodo):
         pos = nodo.positions;
-        return sum((self.distance(x, i+1) for (i, x) in enumerate(pos)));
+        return sum((self.distance(x, i) for (i, x) in zip(self.indices, pos)));
 
-    def __init__(self, s, distance, grid, n, M, size = 100000):
+    def __init__(self, s, distance, grid, n, M, size = 10000, W=1):
         self.grid = grid; self.n = n; self.M = M;
         self.distance = distance;
         self.frontier = PQueue(size);
         self.reached = set();
+        self.indices = [x+1  for (x,y) in s.positions];
         self.nodo = s;
-        self.nodo.h = self.H(self.nodo);
+        self.W = W;
+        self.nodo.h = self.W * self.H(self.nodo);
 
         self.frontier.push(self.nodo, self.reached);
 
@@ -62,6 +64,6 @@ class Beam():
                 for x in self.nodo.neighbors:
                     if(x.positions not in self.reached):
                         self.reached.add(x.positions)
-                        x.h = self.H(x);
+                        x.h = self.W * self.H(x);
                         #print(x);
                         self.frontier.push(x, self.reached);

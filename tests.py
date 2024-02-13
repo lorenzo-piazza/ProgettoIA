@@ -3,13 +3,12 @@
 from IDAstar import *
 from Astar import *
 from Beam import *
+from Astar_DW import *
 from timeit import default_timer as timer
 
 import numpy as np;
 
-print(grid, "\n");
-
-position = [(0,0), (1,0), (2,0)];
+position = [(0,0), (1,0), (2,0), (3,0), (4,0)];
 
 print(len(position))
 
@@ -17,7 +16,7 @@ start = timer();
 
 nodo = Node(tuple(position), None);
 
-ss = IDAstar(nodo, Manhattan_distance, grid , n, M)
+ss = Astar(nodo, Manhattan_distance, grid , n, M, 3);
 
 result = ss.search();
 

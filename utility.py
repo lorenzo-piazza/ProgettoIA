@@ -8,15 +8,15 @@ import functools
 import math
 import numpy as np
 
-M = 3;
-n = 7;
+M = 5;
+n = 9;
 
-grid = np.array([[1,0,0,0,0,0,0],
+grid = np.array([[0,0,0,0,0,0,0],
+                 [1,0,0,0,0,0,0],
                  [2,0,0,0,0,0,0],
+                 [0,0,0,0,0,0,0],
+                 [0,0,0,0,0,0,0],
                  [3,0,0,0,0,0,0],
-                 [0,0,0,0,0,0,0],
-                 [0,0,0,0,0,0,0],
-                 [0,0,0,0,0,0,0],
                  [0,0,0,0,0,0,0]]);
 
 # M = 3;
@@ -64,7 +64,7 @@ def Euclidean_distance(pos, i):
 
 @functools.total_ordering
 class Node:
-    __slots__ = ("positions", "parent", "g", "h", "neighbors", "cost")
+    #__slots__ = ("positions", "parent", "g", "h", "neighbors", "cost")
 
     def __init__(self, positions, parent, g = 0):
         self.positions = positions;

@@ -8,15 +8,16 @@ process = psutil.Process()
 
 
 class IDAstar():
-    __slots__ = ("grid", "distance", "frontier", "reached", "nodo", "threshold" ,"n", "M")
+    __slots__ = ("grid", "distance", "frontier", "indices", "reached", "nodo", "threshold" ,"n", "M")
 
     def H(self, nodo):
         pos = nodo.positions;
-        return sum((self.distance(x, i+1) for (i, x) in enumerate(pos)));
+        return sum((self.distance(x, i) for (i, x) in zip(self.indices, pos)));
 
     def __init__(self, s, distance, grid, n, M):
         self.grid = grid; self.n = n; self.M = M;
         self.distance = distance;
+        self.indices = [x+1 for (x,y) in s.positions];
         self.nodo = s;
         #print("sss", s);
         self.nodo.h = self.H(self.nodo);
@@ -34,7 +35,6 @@ class IDAstar():
                 self.threshold = result;
 
             print(str(self.threshold) +  " \n ----------------- \n" + str(self.nodo))
-            time.sleep(1)
 
 
     def search_rec(self, threshold):
