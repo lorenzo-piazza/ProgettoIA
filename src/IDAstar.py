@@ -8,22 +8,23 @@ process = psutil.Process()
 
 
 class IDAstar():
-    __slots__ = ("grid", "distance", "frontier", "indices", "reached", "nodo", "threshold" ,"n", "M")
+    __slots__ = ("grid", "distance", "frontier", "indices", "reached", "nodo", "threshold" ,"n", "M", "W")
 
     def H(self, nodo):
         pos = nodo.positions;
         return sum((self.distance(x, i) for (i, x) in zip(self.indices, pos)));
 
-    def __init__(self, s, distance, grid, n, M):
-        self.grid = grid; self.n = n; self.M = M;
+    def __init__(self, s, distance, n, M, W=1):
+        self.n = n; self.M = M;
         self.distance = distance;
         self.indices = [x+1 for (x,y) in s.positions];
         self.nodo = s;
+        self.W = W;
         #print("sss", s);
-        self.nodo.h = self.H(self.nodo);
+        self.nodo.h = self.W * self.H(self.nodo);
 
     def search(self):
-        self.threshold = self.nodo.g + self.nodo.h;
+        self.threshold = self.nodo.g + self.W * self.nodo.h;
         while(True):
             self.frontier = [self.nodo];
             self.reached = set();
@@ -53,16 +54,9 @@ class IDAstar():
                 if(node.g + node.h < valmin):
                     valmin = node.g + node.h;
             else:
-                node.neighbors = [];
                 node.add_neighbors(self.n, self.M);
                 for x in node.neighbors:
-                    if (x.positions not in self.reached):
-                        x.h = self.H(x);
-                        self.reached.add(x.positions)
-                        #print(x);
-                        if(x.g + x.h > threshold):
-                            if(x.g + x.h < valmin):
-                                valmin = x.g + x.h;
-                        else:
-                            self.frontier.append(x);
+                    x.h = self.H(x);
+                    #print(x);
+                    self.frontier.append(x);
         return valmin

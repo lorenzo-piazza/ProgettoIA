@@ -8,7 +8,7 @@ from timeit import default_timer as timer
 
 import numpy as np;
 
-position = [(0,0), (1,0), (2,0), (3,0), (4,0)];
+position = [(0,0), (1,0), (2,0), (3,0), (9,0), (7,0), (4,0), (5,0), (8,0)];
 
 print(len(position))
 
@@ -16,7 +16,7 @@ start = timer();
 
 nodo = Node(tuple(position), None);
 
-ss = Astar(nodo, Manhattan_distance, grid , n, M, 3);
+ss = Beam(nodo, Manhattan_distance, n, M, 20, 2);
 
 result = ss.search();
 

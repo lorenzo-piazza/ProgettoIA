@@ -8,27 +8,17 @@ import functools
 import math
 import numpy as np
 
-M = 5;
-n = 9;
-
-grid = np.array([[0,0,0,0,0,0,0],
-                 [1,0,0,0,0,0,0],
-                 [2,0,0,0,0,0,0],
-                 [0,0,0,0,0,0,0],
-                 [0,0,0,0,0,0,0],
-                 [3,0,0,0,0,0,0],
-                 [0,0,0,0,0,0,0]]);
+M = 9;
+n = 10;
 
 # M = 3;
 # n = 3;
-
-# grid = np.array([[1,0,0], [2,0,0], [3,0,0]]);
 
 ENDC = '\033[0m'
 BOLD = '\033[1m'
 ITALIC = '\x1b[3m'
 UNDERLINE = '\033[4m'
-colors = ["\x1b[32m", "\x1b[31m", "\x1b[33m", "\x1b[34m", "\x1b[35m", "\x1b[36m", BOLD, ITALIC, UNDERLINE]
+colors = [UNDERLINE, "\x1b[32m", "\x1b[31m", "\x1b[33m", "\x1b[34m", "\x1b[35m", "\x1b[36m", BOLD, ITALIC]
 
 def print_matrix(arr):
     for x in arr:
@@ -64,7 +54,7 @@ def Euclidean_distance(pos, i):
 
 @functools.total_ordering
 class Node:
-    #__slots__ = ("positions", "parent", "g", "h", "neighbors", "cost")
+    __slots__ = ("positions", "parent", "g", "h", "neighbors", "cost", "d")
 
     def __init__(self, positions, parent, g = 0):
         self.positions = positions;
@@ -144,70 +134,65 @@ class Node:
 
                 for i in range(len(self.positions)):
                     (x,y) = self.positions[i];
-
-                    match comb[i]:
-                        case 1:
-                            if x > 0:
-                                adj = self.four_adj(self.positions[i]);
-                                add = (x - 1, y);
-                                if 1 in adj:
-                                    if add not in arr_adj and add in inplace and x - 1 > 0:
-                                        if self.append_impossible(toadd, (x - 2, y), i, 2): break;
-                                        arr_adj.append(add)
-                                    else:
-                                        if self.append_impossible(toadd, add, i, 1): break;
+                    if comb[i] == 1:
+                        if x > 0:
+                            adj = self.four_adj(self.positions[i]);
+                            add = (x - 1, y);
+                            if 1 in adj:
+                                if add not in arr_adj and add in inplace and x - 1 > 0:
+                                    if self.append_impossible(toadd, (x - 2, y), i, 2): break;
+                                    arr_adj.append(add)
                                 else:
                                     if self.append_impossible(toadd, add, i, 1): break;
                             else:
-                                break;
+                                if self.append_impossible(toadd, add, i, 1): break;
+                        else:
+                            break;
 
-                        case 2:
-                            if y < n-1:
-                                adj = self.four_adj(self.positions[i]);
-                                add = (x, y + 1)
-                                if 2 in adj:
-                                    if add not in arr_adj and add in inplace and y + 1 < n-1:
-                                        if self.append_impossible(toadd, (x, y + 2), i, 2): break;
-                                        arr_adj.append(add)
-                                    else:
-                                        if self.append_impossible(toadd, add, i, 1): break;
+                    if comb[i] == 2:
+                        if y < n-1:
+                            adj = self.four_adj(self.positions[i]);
+                            add = (x, y + 1)
+                            if 2 in adj:
+                                if add not in arr_adj and add in inplace and y + 1 < n-1:
+                                    if self.append_impossible(toadd, (x, y + 2), i, 2): break;
+                                    arr_adj.append(add)
                                 else:
                                     if self.append_impossible(toadd, add, i, 1): break;
                             else:
-                                break;
+                                if self.append_impossible(toadd, add, i, 1): break;
+                        else:
+                            break;
 
-                        case 3:
-                            if x < n-1:
-                                adj = self.four_adj(self.positions[i]);
-                                add = (x + 1, y)
-                                if 3 in adj:
-                                    if add not in arr_adj and add in inplace and x + 1 < n-1:
-                                        if self.append_impossible(toadd, (x + 2, y), i, 2): break;
-                                        arr_adj.append(add)
-                                    else:
-                                        if self.append_impossible(toadd, add, i, 1): break;
+                    if comb[i] == 3:
+                        if x < n-1:
+                            adj = self.four_adj(self.positions[i]);
+                            add = (x + 1, y)
+                            if 3 in adj:
+                                if add not in arr_adj and add in inplace and x + 1 < n-1:
+                                    if self.append_impossible(toadd, (x + 2, y), i, 2): break;
+                                    arr_adj.append(add)
                                 else:
                                     if self.append_impossible(toadd, add, i, 1): break;
                             else:
-                                break;
+                                if self.append_impossible(toadd, add, i, 1): break;
+                        else:
+                            break;
 
-                        case 4:
-                            if y > 0:
-                                adj = self.four_adj(self.positions[i]);
-                                add = (x, y - 1)
-                                if 4 in adj:
-                                    if add not in arr_adj and add in inplace and y - 1 > 0:
-                                        if self.append_impossible(toadd, (x, y - 2), i, 2): break;
-                                        arr_adj.append(add)
-                                    else:
-                                        if self.append_impossible(toadd, add, i, 1): break;
+                    if comb[i] == 4:
+                        if y > 0:
+                            adj = self.four_adj(self.positions[i]);
+                            add = (x, y - 1)
+                            if 4 in adj:
+                                if add not in arr_adj and add in inplace and y - 1 > 0:
+                                    if self.append_impossible(toadd, (x, y - 2), i, 2): break;
+                                    arr_adj.append(add)
                                 else:
                                     if self.append_impossible(toadd, add, i, 1): break;
                             else:
-                                break;
-
-                        case _:
-                            pass;
+                                if self.append_impossible(toadd, add, i, 1): break;
+                        else:
+                            break;
                 else:
                     toadd = tuple(toadd)
                     if(toadd != self.positions):

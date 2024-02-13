@@ -37,8 +37,8 @@ class Beam():
         pos = nodo.positions;
         return sum((self.distance(x, i) for (i, x) in zip(self.indices, pos)));
 
-    def __init__(self, s, distance, grid, n, M, size = 10000, W=1):
-        self.grid = grid; self.n = n; self.M = M;
+    def __init__(self, s, distance, n, M, size = 1000, W=1):
+        self.n = n; self.M = M;
         self.distance = distance;
         self.frontier = PQueue(size);
         self.reached = set();

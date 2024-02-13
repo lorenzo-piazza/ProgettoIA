@@ -2,29 +2,21 @@
 
 from utility import *
 
-class Astar_DW():
+class Astar():
     def H(self, nodo):
         pos = nodo.positions;
         return sum((self.distance(x, i) for (i, x) in zip(self.indices, pos)));
 
-    def PESO(self, d):
-        if (d <= self.N):
-            return 1 - (d/ self.N)
-        else:
-            return 0;
-
-    def __init__(self, s, distance, grid, n, M, W = 1):
-        self.grid = grid; self.n = n; self.M = M;
+    def __init__(self, s, distance, n, M, W=1):
+        self.n = n; self.M = M;
         self.distance = distance;
         self.frontier = PriorityQueue();
         self.reached = set();
         self.indices = [x+1  for (x,y) in s.positions];
         self.nodo = s;
         self.W = W
-        self.N = (n*2 - 2)+5;
         #print("sss", s);
-        self.nodo.d = 0;
-        self.nodo.h = (1 + self.W * self.PESO(0)) * self.H(self.nodo);
+        self.nodo.h = self.W * self.H(self.nodo);
 
         self.frontier.put(self.nodo);
 
@@ -43,7 +35,6 @@ class Astar_DW():
                 for x in self.nodo.neighbors:
                     if(x.positions not in self.reached):
                         self.reached.add(x.positions)
-                        x.d = self.nodo.d + 1;
-                        x.h = (1 + self.W * self.PESO(x.d)) * self.H(x);
+                        x.h = self.W * self.H(x);
                         #print(x);
                         self.frontier.put(x);
