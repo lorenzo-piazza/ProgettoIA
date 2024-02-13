@@ -70,9 +70,10 @@ Dati $b$ il branching factor, $d$ il la profondità massima e $\beta$ la beam wi
 | Tempo | $O(b^d)$|$O(b^d)$|$O(\beta^d)$|
 | Ottimale | $\checkmark$|$\checkmark$|✘|
 | Completo | $\checkmark$ |$\checkmark$|✘|
+
 Definiamo un algoritmo:
-	- **Ottimale** quando trova sempre la soluzione ottimale
-	- **Completo** quando trova sempre una soluzione (se esiste)
+- **Ottimale** quando trova sempre la soluzione ottimale
+- **Completo** quando trova sempre una soluzione (se esiste)
 
 ### A*
 
