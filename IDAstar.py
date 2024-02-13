@@ -1,38 +1,68 @@
 #!/usr/bin/env python3
 
 from utility import *
+import os, psutil
+import math
+import time
+process = psutil.Process()
+
 
 class IDAstar():
+    __slots__ = ("grid", "distance", "frontier", "indices", "reached", "nodo", "threshold" ,"n", "M")
+
     def H(self, nodo):
         pos = nodo.positions;
-        return sum((self.distance(x, i+1) for (i, x) in enumerate(pos)));
+        return sum((self.distance(x, i) for (i, x) in zip(self.indices, pos)));
 
     def __init__(self, s, distance, grid, n, M):
         self.grid = grid; self.n = n; self.M = M;
         self.distance = distance;
-        self.frontier = PriorityQueue();
-        self.reached = set();
+        self.indices = [x+1 for (x,y) in s.positions];
         self.nodo = s;
         #print("sss", s);
         self.nodo.h = self.H(self.nodo);
 
-        self.frontier.put(self.nodo);
-
     def search(self):
-        while not self.frontier.empty():
-            self.nodo = self.frontier.get();
+        self.threshold = self.nodo.g + self.nodo.h;
+        while(True):
+            self.frontier = [self.nodo];
+            self.reached = set();
+            result = self.search_rec(self.threshold);
 
-            print(self.frontier.qsize());
-            #print(self.nodo)
-            #print_pos(self.nodo.positions, self.n);
-            #time.sleep(1)
-            if(self.nodo.h == 0):   ## GOAL
-                return self.nodo;
+            if(isinstance(result, Node)):
+                return result;
             else:
-                self.nodo.add_neighbors(self.grid, self.n, self.M);
-                for x in self.nodo.neighbors:
-                    if(x.positions not in self.reached):
-                        self.reached.add(x.positions)
+                self.threshold = result;
+
+            print(str(self.threshold) +  " \n ----------------- \n" + str(self.nodo))
+
+
+    def search_rec(self, threshold):
+        valmin = float("inf");
+        while self.frontier:
+            node = self.frontier.pop();
+
+            #print(len(self.frontier), threshold, process.memory_info().rss);
+            #print(node)
+            #print_pos(node.positions, self.n);
+            #time.sleep(1)
+
+            if(node.h == 0):   ## GOAL
+                return node;
+            elif(node.g + node.h > threshold):
+                if(node.g + node.h < valmin):
+                    valmin = node.g + node.h;
+            else:
+                node.neighbors = [];
+                node.add_neighbors(self.n, self.M);
+                for x in node.neighbors:
+                    if (x.positions not in self.reached):
                         x.h = self.H(x);
+                        self.reached.add(x.positions)
                         #print(x);
-                        self.frontier.put(x);
+                        if(x.g + x.h > threshold):
+                            if(x.g + x.h < valmin):
+                                valmin = x.g + x.h;
+                        else:
+                            self.frontier.append(x);
+        return valmin
