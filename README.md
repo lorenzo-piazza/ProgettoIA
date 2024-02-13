@@ -61,11 +61,24 @@ E un'euristica come la **distanza di Manhattan** tra la posizione attuale di del
 ```math
  C(s, a, s')= \sum_{i=1}^{M}{c(k_i, a, k_i')} \ t.c. \ k_i \in s \ \wedge \ k_i' \in s'
  ```
-DOMANDE
-1. non riga inferiore ma prima colonna
-2. come gestiamo il costo del salto di un veicolo 1 o 2? come gestiamo il costo di stare fermi?
-3. Possono scambiarsi?
-4. fai domanda su branching factor e effective branching factor
+
+## Algoritmi
+Dati $b$ il branching factor, $d$ il la profondità massima e $\beta$ la beam width
+| |A*|IDA*|Beam Search|
+|:---:|:---:|:---:|:---:|:---:|
+| Spazio | $O(b^d)$|$O(d)$|$O(\beta)$|
+| Tempo | $O(b^d)$|$O(b^d)$|$O(\beta^d)$|
+| Ottimale | $\checkmark$|$\checkmark$|✘|
+| Completo | $\checkmark$ |$\checkmark$|✘|
+Definiamo un algoritmo:
+	- **Ottimale** quando trova sempre la soluzione ottimale
+	- **Completo** quando trova sempre una soluzione (se esiste)
+
+### A*
+
+### IDA*
+
+### Beam search
 
 ROBE IN PIù
 Sistema definizione di C
