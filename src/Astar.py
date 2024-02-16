@@ -5,7 +5,7 @@ from utility import *
 class Astar():
     def H(self, nodo):
         pos = nodo.positions;
-        return sum((self.distance(x, i) for (i, x) in zip(self.indices, pos)));
+        return sum((self.distance(x, i, self.n) for (i, x) in zip(self.indices, pos)));
 
     def __init__(self, s, distance, n, M, W=1):
         self.n = n; self.M = M;
@@ -31,8 +31,7 @@ class Astar():
             if(self.nodo.h == 0):   ## GOAL
                 return self.nodo;
             else:
-                self.nodo.add_neighbors(self.n, self.M);
-                for x in self.nodo.neighbors:
+                for x in self.nodo.get_neighbors(self.n, self.M):
                     if(x.positions not in self.reached):
                         self.reached.add(x.positions)
                         x.h = self.W * self.H(x);
