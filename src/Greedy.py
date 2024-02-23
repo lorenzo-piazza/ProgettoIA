@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 from utility import *
 
-class Astar:
+class Greedy:
 	def H(self, nodo: Node) -> float:
 		pos = nodo.positions;
 		return sum((self.distance(x, i, self.n) for (i, x) in zip(self.indices, pos)));
@@ -13,7 +13,7 @@ class Astar:
 		self.reached: set = set();
 		self.indices = [x+1  for (x,y) in s.positions];
 		self.nodo = s;
-		self.W = W;
+		self.W = W
 		self.nodo.h = self.W * self.H(self.nodo);
 
 		self.frontier.put(self.nodo);
@@ -29,5 +29,6 @@ class Astar:
 					if(x.positions not in self.reached):
 						self.reached.add(x.positions)
 						x.h = self.W * self.H(x);
+						x.g = 0;
 						self.frontier.put(x);
 		return None

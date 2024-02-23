@@ -10,7 +10,7 @@ class IDAstar:
 		pos = nodo.positions;
 		return sum((self.distance(x, i, self.n) for (i, x) in zip(self.indices, pos)));
 
-	def __init__(self, s: Node, distance: Callable, n: int, M: int, W: float = 1):
+	def __init__(self, s: Node, distance: Callable, n: int, M: int, W: float = 1, *args):
 		self.n = n; self.M = M;
 		self.distance = distance;
 		self.indices = [x+1 for (x,y) in s.positions];

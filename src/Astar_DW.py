@@ -13,7 +13,7 @@ class Astar_DW:
 		else:
 			return 0;
 
-	def __init__(self, s: Node, distance: Callable, n: int, M: int, W: float = 1):
+	def __init__(self, s: Node, distance: Callable, n: int, M: int, W: float = 1, *args):
 		self.n = n; self.M = M;
 		self.distance = distance;
 		self.frontier: PriorityQueue = PriorityQueue();
