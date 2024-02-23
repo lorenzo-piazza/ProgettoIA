@@ -87,12 +87,12 @@ Abbiamo quindi due casi:
 
 ## Algoritmi
 Dati $b$ il branching factor, $d$ il la profondità massima e $\beta$ la beam width
-| |A*|IDA*|Beam Search|
-|:---:|:---:|:---:|:---:|
-| Spazio | $O(b^d)$|$O(d)$|$O(\beta)$|
-| Tempo | $O(b^d)$|$O(b^d)$|$O(b^d)$|
-| Ottimale | $\checkmark$|$\checkmark$|✘|
-| Completo | $\checkmark$ |$\checkmark$|✘|
+| |A*|IDA*|Beam Search|Greedy Search|
+|:---:|:---:|:---:|:---:|:---:|
+| Spazio | $O(b^d)$|$O(d)$|$O(\beta)$|$O(b^d)$|
+| Tempo | $O(b^d)$|$O(b^d)$|$O(b^d)$|$O(b^d)$|
+| Ottimale | $\checkmark$|$\checkmark$|✘|✘|
+| Completo | $\checkmark$ |$\checkmark$|✘|$\checkmark$|
 
 Definiamo un algoritmo:
 - **Ottimale** quando trova sempre la soluzione ottimale
@@ -112,3 +112,6 @@ Seppur IDA* ha la stessa complessità asintotica (in termini di tempo) di A*, ne
 
 ### Beam search
 La ricerca beam limita la dimensione della frontiera. L'approccio più semplice è mantenere solo i k nodi con i migliori punteggi f, scartando tutti gli altri nodi espansi. Questo ovviamente rende la ricerca incompleta e non ottimale, ma possiamo scegliere k in modo da sfruttare al meglio la memoria disponibile, e l'algoritmo si esegue velocemente perché espande meno nodi. Per molti problemi è in grado di trovare buone soluzioni quasi ottimali. Si può pensare alla ricerca con costo uniforme o alla ricerca A* come a un'espansione uniforme in tutte le direzioni in contorni concentrici, e pensare alla ricerca beam come all'esplorazione solo di una porzione focalizzata di quei contorni, la porzione che contiene i k migliori candidati.
+
+### Greedy search
+La ricerca greedy è una forma di best-first search che espande prima il nodo con il valore della funzione di valutazione più basso, ovvero il nodo che sembra essere più vicino all'obiettivo, sulla base del fatto che ciò probabilmente porterà rapidamente a una soluzione. Pertanto, la funzione di valutazione $f(n) = h(s)$ con $h(s)$ una funzione euristica che da una stima del costo del cammino minimo da s al goal.
