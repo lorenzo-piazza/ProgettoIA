@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
-
+from __future__ import annotations
+from typing import Any, Generator, Sequence, TypeVar, Optional, Callable
 from itertools import combinations
 from queue import PriorityQueue
 
@@ -14,104 +15,33 @@ ITALIC = '\x1b[3m'
 UNDERLINE = '\033[4m'
 colors = [UNDERLINE, "\x1b[32m", "\x1b[31m", "\x1b[33m", "\x1b[34m", "\x1b[35m", "\x1b[36m", BOLD, ITALIC]
 
-
-def print_path(node, n , M):
-	print("PATH --------------- PATH\n")
-	for i in range(M):
-		p = node;
-		pos = dict()
-		old = None;
-		while not p is None:
-			if old is not None:
-				xo, yo = p.positions[i];
-				x , y = old
-				if x - xo > 0:
-					pos[p.positions[i]] = "▾"
-				elif x - xo < 0:
-					pos[p.positions[i]] = "▴"
-				elif y - yo > 0:
-					pos[p.positions[i]] = "▸"
-				elif y - yo < 0:
-					pos[p.positions[i]] = "◂"
-				else:
-					pos[p.positions[i]] = "·";
-			else:
-				pos[p.positions[i]] = "×";
-
-			old = p.positions[i];
-
-			p = p.parent;
-
-		arr = np.zeros((n,n)); cont = 0;
-		for x in range(n):
-			print("[", end="")
-			for y in range(n):
-				if (x,y) in pos:
-					cont += 1;
-					print(colors[int(i+1) % len(colors)] + pos[(x,y)] + ENDC, end=" ")
-				else:
-					print(0, end=" ")
-			print("\b]")
-
-		print("");
-
-def print_matrix(arr):
-	for x in arr:
-		print("[", end="")
-		for y in x:
-			if y != 0:
-				print(colors[int(y) % len(colors)] + str(int(y)) + ENDC, end=" ")
-			else:
-				print(int(y), end=" ")
-		print("\b]")
-
-def print_pos(pos, n):
-	arr = np.zeros((n,n))
-	count = 0;
-	for i in pos:
-		count += 1
-		(x,y) = i;
-		arr[x][y] = count;
-	print_matrix(arr);
-	print("")
-
-def Manhattan_distance(pos, i, n):
-	(x,y) = pos;
-	return (abs(x - (n-i)) + abs(y - (n-1)));
-
-def Chebyshev_distance(pos, i, n):
-	(x,y) = pos;
-	return max(abs(x - (n-i)), abs(y - (n-1)));
-
-def Euclidean_distance(pos, i, n):
-	(x,y) = pos;
-	return math.sqrt((x - (n-i))**2 + (y - (n-1))**2);
-
 @functools.total_ordering
 class Node:
 	__slots__ = ("positions", "parent", "g", "h", "cost", "d")
 
-	def __init__(self, positions, parent, g = 0):
+	def __init__(self, positions: Sequence[tuple[int, int]], parent: Any = None, g : float = 0):
 		self.positions = positions;
 		self.parent = parent;
 
 		self.g = g;   ## PATH-COST
-		self.h = 0;   ## HEURISTIC
+		self.h = 0.0;   ## HEURISTIC
 
-	def __gt__(self, other):
+	def __gt__(self, other: Node) -> bool:
 		return self.g + self.h > other.g + other.h;
 
-	def __lt__(self, other):
+	def __lt__(self, other: Node) -> bool:
 		return self.g + self.h < other.g + other.h;
 
-	def __eq__(self, other):
+	def __eq__(self, other: object) -> bool:
+		if not isinstance(other, Node):
+			return NotImplemented
 		return self.g + self.h == other.g + other.h;
 
-	def __repr__(self):
+	def __repr__(self) -> str:
 		return str(id(self)) + " - " + str(self.g) + " " +  str(self.h) + " " + \
 			   str(None if self.parent is None else id(self.parent)) + " " + str(self.positions);
 
-	def four_adj(self, pos, n):
+	def four_adj(self, pos: tuple[int, int], n: int) -> int | None:
 		x,y = pos;
 
 		if x > 0 and (x-1, y) in self.positions:
@@ -123,7 +53,9 @@ class Node:
 		if y > 0 and (x, y - 1) in self.positions:
 			return 4;
 
-	def append_impossible(self, toadd, pos, i, cost):
+		return None
+
+	def append_impossible(self, toadd: list[tuple[int, int]], pos: tuple[int, int], i: int, cost: float) -> bool:
 		if(pos in toadd):
 			return True;
 		else:
@@ -131,7 +63,7 @@ class Node:
 			self.cost += cost;
 			return False
 
-	def get_neighbors(self, n, M):
+	def get_neighbors(self, n: int, M: int) -> Generator[Node, None, None]:
 		# 0 fermi
 		# 1 Su
 		# 2 Destra
@@ -154,8 +86,8 @@ class Node:
 				else:
 					break
 
-			inplace = []; toadd = [None for x in range(M)];  arr_adj = [];
-			self.cost = 0;
+			inplace = []; toadd = [(-1, -1) for x in range(M)];  arr_adj = [];
+			self.cost = 0.0;
 
 			for i in range(len(self.positions)):
 				if(comb[i] == 0):
@@ -225,9 +157,82 @@ class Node:
 					else:
 						break;
 			else:
-				toadd = tuple(toadd);
-				if(toadd != self.positions):
-					yield Node(toadd, self, self.cost + self.g);
+				toa = tuple(toadd);
+				if(toa != self.positions):
+					yield Node(toa, self, self.cost + self.g);
 
 	# def add_neighbors(self, n, M):
 	#     self.neighbors = list(self.get_neighbors(n, M));
+
+
+def print_path(node: Node, n: int, M: int):
+	print("PATH --------------- PATH\n")
+	for i in range(M):
+		p = node;
+		pos = dict()
+		old = None;
+		while not p is None:
+			if old is not None:
+				xo, yo = p.positions[i];
+				x , y = old
+				if x - xo > 0:
+					pos[p.positions[i]] = "▾"
+				elif x - xo < 0:
+					pos[p.positions[i]] = "▴"
+				elif y - yo > 0:
+					pos[p.positions[i]] = "▸"
+				elif y - yo < 0:
+					pos[p.positions[i]] = "◂"
+				else:
+					pos[p.positions[i]] = "·";
+			else:
+				pos[p.positions[i]] = "×";
+
+			old = p.positions[i];
+
+			p = p.parent;
+
+		arr = np.zeros((n,n)); cont = 0;
+		for x in range(n):
+			print("[", end="")
+			for y in range(n):
+				if (x,y) in pos:
+					cont += 1;
+					print(colors[int(i+1) % len(colors)] + pos[(x,y)] + ENDC, end=" ")
+				else:
+					print(0, end=" ")
+			print("\b]")
+
+		print("");
+
+def print_matrix(arr: np.ndarray):
+	for x in arr:
+		print("[", end="")
+		for y in x:
+			if y != 0:
+				print(colors[int(y) % len(colors)] + str(int(y)) + ENDC, end=" ")
+			else:
+				print(int(y), end=" ")
+		print("\b]")
+
+def print_pos(pos: Sequence[tuple[int, int]], n: int):
+	arr = np.zeros((n,n))
+	count = 0;
+	for i in pos:
+		count += 1
+		(x,y) = i;
+		arr[x][y] = count;
+	print_matrix(arr);
+	print("")
+
+def Manhattan_distance(pos: tuple[int, int], i: int, n: int) -> int:
+	(x,y) = pos;
+	return (abs(x - (n-i)) + abs(y - (n-1)));
+
+def Chebyshev_distance(pos: tuple[int, int], i: int, n: int) -> int:
+	(x,y) = pos;
+	return max(abs(x - (n-i)), abs(y - (n-1)));
+
+def Euclidean_distance(pos: tuple[int, int], i: int, n: int) -> float:
+	(x,y) = pos;
+	return math.sqrt((x - (n-i))**2 + (y - (n-1))**2);

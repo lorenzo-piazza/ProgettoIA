@@ -8,8 +8,12 @@ from timeit import default_timer as timer
 
 import numpy as np;
 
-M = 5;
-n = 5;
+# M = 4;  #NUMERO DI VEICOLI
+# n = 5;  #GRANDEZZAA DELLA MATRICE
+
+M = int(input("Inserisci M>>>"));  #NUMERO DI VEICOLI
+n = int(input("Inserisci n>>>"));  #GRANDEZZAA DELLA MATRICE
+
 
 position = list(zip(range(M), [0 for x in range(M)]))
 #position = [(0,0), (1,0), (2,0), (3,0)];
@@ -20,7 +24,7 @@ start = timer();
 
 nodo = Node(tuple(position), None);
 
-ss = Beam(nodo, Manhattan_distance, n, M, 100);
+ss = Beam(nodo, Manhattan_distance, n, M, 1, 10);
 
 result = ss.search();
 

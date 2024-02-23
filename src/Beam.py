@@ -2,17 +2,14 @@
 
 from utility import *
 import heapq;
-import os, psutil
 
-process = psutil.Process()
-
-class PQueue():
-	def __init__(self, maxsize = 10):
+class PQueue:
+	def __init__(self, maxsize: int = 10):
 		self.maxsize = maxsize;
 		self.size = 0;
-		self.heap = [];
+		self.heap: list = [];
 
-	def push(self, value, reached):
+	def push(self, value: Node, reached: set):
 		if(self.size < self.maxsize):
 			heapq.heappush(self.heap, value);
 			self.size += 1;
@@ -22,26 +19,26 @@ class PQueue():
 			reached.remove(val.positions);
 			del val;
 
-	def pop(self):
+	def pop(self) -> Node:
 		self.size -= 1;
 		return heapq.heappop(self.heap)
 
-	def notempty(self):
+	def notempty(self) -> bool:
 		return bool(self.heap);
 
-	def __len__(self):
+	def __len__(self) -> int:
 		return self.size;
 
-class Beam():
-	def H(self, nodo):
+class Beam:
+	def H(self, nodo: Node) -> float:
 		pos = nodo.positions;
 		return sum((self.distance(x, i, self.n) for (i, x) in zip(self.indices, pos)));
 
-	def __init__(self, s, distance, n, M, W=1, size = 1000):
+	def __init__(self, s: Node, distance: Callable, n: int, M: int, W: float = 1, size: int = 1000):
 		self.n = n; self.M = M;
 		self.distance = distance;
 		self.frontier = PQueue(size);
-		self.reached = set();
+		self.reached: set = set();
 		self.indices = [x+1  for (x,y) in s.positions];
 		self.nodo = s;
 		self.W = W;
@@ -49,13 +46,9 @@ class Beam():
 
 		self.frontier.push(self.nodo, self.reached);
 
-	def search(self):
+	def search(self) -> Optional[Node]:
 		while self.frontier.notempty():
 			self.nodo = self.frontier.pop();
-
-			#print("len --" , len(self.frontier), process.memory_info().rss);
-			#print(self.nodo)
-			#print_pos(self.nodo.positions, self.n);
 
 			if(self.nodo.h == 0):   ## GOAL
 				return self.nodo;
@@ -64,5 +57,5 @@ class Beam():
 					if(x.positions not in self.reached):
 						self.reached.add(x.positions)
 						x.h = self.W * self.H(x);
-						#print(x);
 						self.frontier.push(x, self.reached);
+		return None
