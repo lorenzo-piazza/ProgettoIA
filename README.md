@@ -38,10 +38,10 @@ Ogni euristica **consistente** è **ammissibile** (ma non viceversa).
 Abbiamo quindi due casi:
 	- Non vengono eseguiti salti: Nel caso in cui non vengano eseguiti salti è possibile ricondursi al caso focalizzato sul singolo veicolo $k$ per ogni veicolo nella matrice infatti:
 		- nel caso facessimo una mossa in una qualsiasi direzione, avremmo che $h(k) \leq 1 + h(k')$ dove $c(k, a, k')=1$ per come è definita la funzione di costo (una qualsiasi mossa ha costo 1) e $h(k') = h(k) - 1$ in quanto $h(k')$ diminuirà dato che il veicolo ci si avvicinerà al goal e la distanza di Manhattan, quindi la funzione euristica $h$ diminuirà di conseguenza.
-![Screenshot](img/img1.png)
+![alt text](https://github.com/lorenzo-piazza/ProgettoIA/blob/main/img/img1.png?raw=true)
 		- nel caso rimanesse fermo, avremmo che $h(k) \leq 1 + h(k)$
 	- Vengono eseguiti salti: Nel caso venga eseguito un salto consideriamo due veicoli adiacenti $a$ e $b$. Per far si che $a$ possa saltare $b$ necessariamente $b$ deve rimanere fermo e nessun altro veicolo può saltare $b$ se non $a$ per definizione del problema. Sia $a'$ è lo stato risultante dopo che $a$ ha eseguito il salto otteniamo che $h(a) + h(b) \leq h(a') + h(b) + 2$ dato che $h(a') = h(a) - 2$, e essendo $b$ rimasto fermo la sua euristica non varierà ma verra aggiunto il costo dell'azione ($\circ$) cioè 1. Quindi sostituendo risulta: $$h(a) + h(b) \leq h(a) - 2 + h(b) + 2$$ cioè $$h(a) + h(b) \leq h(a) + h(b)$$
-![Screenshot](img/img2.png)
+![alt text](https://github.com/lorenzo-piazza/ProgettoIA/blob/main/img/img2.png?raw=true)
 ## Definizione del problema
 - Spazio degli stati $S$
 	- Matrice $n \times n$ dove $M$ delle celle devono essere occupate dagli $M$ veicoli, dove una cella può contenere al massimo un solo veicolo
