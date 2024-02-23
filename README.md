@@ -94,13 +94,10 @@ A* utilizza come funzione di valutazione $f(n)=g(n) + h(s)$ dove:
 Iterative deepening A* (nota anche con l'acronimo IDA*) è un algoritmo euristico introdotto da Richard Korf nel 1985. Il suo scopo è quello di trovare il percorso minimo da un nodo iniziale a ciascuno dei nodi soluzione in un grafo pesato.
 
 Questo algoritmo rappresenta una variante dell'iterative deepening depth-first search (ricerca in profondità con incremento iterativo) utilizzata per ottimizzare le prestazioni di A*. Il principale vantaggio di IDA* risiede nell'uso di memoria lineare, a differenza di A*, che può richiedere uno spazio esponenziale nel peggiore dei casi. Tuttavia, va notato che IDA* utilizza una quantità limitata di memoria, che potrebbe essere sfruttata per migliorare le prestazioni in termini di tempo.
-**DA CAMBIARE**
-scrivere roba del fatto che la complessita di ida* seppur ha la stessa big o notation di a* in verita in termini reali e' piu lenta perche ripassa piu volte su stessi nodi yada yada
+Seppur IDA* ha la stessa complessità asintotica (in termini di tempo) di A*, nella realtà questo risulta più lento in quanto per il suo funzionamento visita più volte i nodi iniziali.
 
 ### Beam search
-L'algoritmo beam search adotta una strategia di ricerca in ampiezza per costruire il suo albero di ricerca. Ad ogni livello di profondità dell'albero, l'algoritmo genera tutti i successori dei nodi correnti, organizzandoli in modo tale che i valori della funzione euristica siano disposti in ordine crescente. Tuttavia, a differenza della best-first search, beam search salva solo un numero predefinito, indicato come "beam width", di stati "migliori" per ogni livello. Maggiore è l'ampiezza predefinita, minore sarà il numero di stati esclusi dalla ricerca. In teoria, impostando l'ampiezza a infinito nessuno stato verrebbe escluso e il comportamento dell'algoritmo sarebbe identico a quello di una best-first search. Limitare l'ampiezza massima predefinita aiuta a controllare i requisiti di memoria per l'esecuzione di questa ricerca. Tuttavia, l'algoritmo non offre garanzie di completezza o ottimalità della soluzione.
-
-L'ampiezza può anche essere resa variabile. Un approccio possibile consiste nel far partire l'algoritmo con ampiezza impostata al valore minimo e, in caso di mancata individuazione di una soluzione, aumentare gradualmente il valore ad ogni nuova esecuzione.
+La ricerca beam limita la dimensione della frontiera. L'approccio più semplice è mantenere solo i k nodi con i migliori punteggi f, scartando tutti gli altri nodi espansi. Questo ovviamente rende la ricerca incompleta e non ottimale, ma possiamo scegliere k in modo da sfruttare al meglio la memoria disponibile, e l'algoritmo si esegue velocemente perché espande meno nodi. Per molti problemi è in grado di trovare buone soluzioni quasi ottimali. Si può pensare alla ricerca con costo uniforme o alla ricerca A* come a un'espansione uniforme in tutte le direzioni in contorni concentrici, e pensare alla ricerca beam come all'esplorazione solo di una porzione focalizzata di quei contorni, la porzione che contiene i k migliori candidati. 
 
 ROBE IN PIù
 Sistema definizione di C
