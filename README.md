@@ -23,21 +23,23 @@
 ```math
  c(k, a, k')= \begin{cases} 1 & \ (\circ) \\ 1 & \  (( \uparrow ) \lor  (\downarrow) \lor (\leftarrow) \lor (\rightarrow)) \ senza\ salti \\ 1 & \  (( \uparrow ) \lor  (\downarrow) \lor (\leftarrow) \lor (\rightarrow)) \ effettuando\ un \ salto \end{cases} 
  ```
-E un'euristica $h$ come la **distanza di Manhattan** tra la posizione attuale di del veicolo e la sua destinazione finale, questa risulta ammissibile.
+E un'euristica $h$ come la **distanza di Manhattan** tra la posizione attuale del veicolo e la sua destinazione finale, questa risulta ammissibile.
 - **PROOF** dell'ammissibilità: restringendo il problema al singolo obbiettivo, nella matrice $n \times n$ abbiamo un solo veicolo. Quindi la distanza di Manhattan risulta ammissibile in quanto il veicolo non può eseguire salti, e inoltre seguirà solamente i "passi" di Manhattan o rimarrà fermo, di conseguenza questa non andrà mai a sovrastimare il path cost.
-	- Quindi dato $k=(x_1, y_1)$ e dato il goal $g'= (x_2, y_2)$ relativo al singolo obiettivo nello stato goal $g$ l'euristica $h$ risulta: $$h(k) = \lvert x_1 - x_2 \lvert +\lvert y_1-y_2 \lvert $$
+	- Quindi dato $k=(x_1, y_1)$ e dato il goal $g'= (x_2, y_2)$ relativo al singolo obiettivo l'euristica $h$ risulta: $$h(k) = \lvert x_1 - x_2 \lvert +\lvert y_1-y_2 \lvert $$
 
 - Costruire un euristica complessiva combinando quelle dei singoli veicoli
 	- Per definire un'euristica complessiva $H$ basta sommare le euristiche focalizzate sui singoli veicoli: 
 	$H:S \longrightarrow \mathbb{N}$ $$H(s) = \sum_{i =1}^{M}{h(s_i)}\ \ t.c.\ s_i\ posizione\ del\ veicolo\ i$$
-	- Un'euristica $h$ è **consistente** se vale la seguente disuguaglianza triangolare: per ogni nodo $k$ e ogni suo successore $k'$ generato dall'azione $a$ abbiamo: $$h(k) \leq c(k, a, k') + h(k')$$ quindi ogni euristica **consistente** è **ammissibile** (ma non viceversa).
-Se un'euristica è **consistente** allora trova la soluzione ottimale per A*.
+	- L'euristica $H$ è **consistente** se vale la seguente disuguaglianza triangolare: per ogni nodo $k$ e ogni suo successore $k'$ generato dall'azione $a$ abbiamo: $$H(k) \leq c(k, a, k') + H(k')$$
+Se un'euristica è **ammissible** allora permette di trovare la soluzione ottimale con A* (per tree-search).
+Se un'euristica è **consistente** allora permette di trovare la soluzione ottimale con A* (per graph-search).
+Ogni euristica **consistente** è **ammissibile** (ma non viceversa).
 - **PROOF** della consistenza: Essendo il problema non più focalizzato sul singolo obiettivo nella matrice $n \times n$ possiamo avere più di un veicolo, di conseguenza è possibile che vengano anche eseguiti dei salti. 
 Abbiamo quindi due casi:
 	- Non vengono eseguiti salti: Nel caso in cui non vengano eseguiti salti è possibile ricondursi al caso focalizzato sul singolo veicolo $k$ per ogni veicolo nella matrice infatti:
 		- nel caso facessimo una mossa in una qualsiasi direzione, avremmo che $h(k) \leq 1 + h(k')$ dove $c(k, a, k')=1$ per come è definita la funzione di costo (una qualsiasi mossa ha costo 1) e $h(k') = h(k) - 1$ in quanto $h(k')$ diminuirà dato che il veicolo ci si avvicinerà al goal e la distanza di Manhattan, quindi la funzione euristica $h$ diminuirà di conseguenza.
 		- nel caso rimanesse fermo, avremmo che $h(k) \leq 1 + h(k)$
-	- Vengono eseguiti salti: Nel caso venga eseguito un salto consideriamo due veicoli adiacenti $a$ e $b$, per far si che $a$ possa saltare $b$ necessariamente $b$ deve rimanere fermo e nessun altro veicolo può saltare $b$ se non $a$ per definizione del problema. Sia $a'$ è lo stato risultante dopo che $a$ ha eseguito il salto otteniamo che $h(a) + h(b) \leq h(a') + h(b) + 2$ dato che $h(a') = h(a) - 2$, e essendo $b$ rimasto fermo la sua euristica non varierà ma verra aggiunto il costo dell'azione ($\circ$) cioè 1. Quindi sostituendo risulta: $$h(a) + h(b) \leq h(a) - 2 + h(b) + 2$$ cioè $$h(a) + h(b) \leq h(a) + h(b)$$
+	- Vengono eseguiti salti: Nel caso venga eseguito un salto consideriamo due veicoli adiacenti $a$ e $b$. Per far si che $a$ possa saltare $b$ necessariamente $b$ deve rimanere fermo e nessun altro veicolo può saltare $b$ se non $a$ per definizione del problema. Sia $a'$ è lo stato risultante dopo che $a$ ha eseguito il salto otteniamo che $h(a) + h(b) \leq h(a') + h(b) + 2$ dato che $h(a') = h(a) - 2$, e essendo $b$ rimasto fermo la sua euristica non varierà ma verra aggiunto il costo dell'azione ($\circ$) cioè 1. Quindi sostituendo risulta: $$h(a) + h(b) \leq h(a) - 2 + h(b) + 2$$ cioè $$h(a) + h(b) \leq h(a) + h(b)$$
 ## Definizione del problema
 - Spazio degli stati $S$
 	- Matrice $n \times n$ dove $M$ delle celle devono essere occupate dagli $M$ veicoli, dove una cella può contenere al massimo un solo veicolo
@@ -74,7 +76,7 @@ Dati $b$ il branching factor, $d$ il la profondità massima e $\beta$ la beam wi
 | |A*|IDA*|Beam Search|
 |:---:|:---:|:---:|:---:|
 | Spazio | $O(b^d)$|$O(d)$|$O(\beta)$|
-| Tempo | $O(b^d)$|$O(b^d)$|$O(\beta^d)$|
+| Tempo | $O(b^d)$|$O(b^d)$|$O(b^d)$|
 | Ottimale | $\checkmark$|$\checkmark$|✘|
 | Completo | $\checkmark$ |$\checkmark$|✘|
 
@@ -86,12 +88,14 @@ Definiamo un algoritmo:
 L'algoritmo A* è un algoritmo di ricerca informata utilizzato per la ricerca su grafi al fine di individuare un percorso ottimale da un nodo iniziale a un nodo obiettivo. Basandosi su una tecnica chiamata "stima euristica", valuta e classifica ogni nodo in base a una stima della migliore strada che passa attraverso quel nodo. L'algoritmo A* segue questa stima euristica per determinare l'ordine di visita dei nodi durante la ricerca. È considerato un esempio di ricerca best-first.
 A* utilizza come funzione di valutazione $f(n)=g(n) + h(s)$ dove:
 - $g(n)$ è il path cost dallo stato iniziale fino allo stato n (stato attuale) 
-- $h(s)$ è una funzione euristica che da una stima utile a capire dove si trova il goal.
+- $h(s)$ è una funzione euristica che da una stima del costo del cammino minimo da s al goal.
 
 ### IDA*
 Iterative deepening A* (nota anche con l'acronimo IDA*) è un algoritmo euristico introdotto da Richard Korf nel 1985. Il suo scopo è quello di trovare il percorso minimo da un nodo iniziale a ciascuno dei nodi soluzione in un grafo pesato.
 
 Questo algoritmo rappresenta una variante dell'iterative deepening depth-first search (ricerca in profondità con incremento iterativo) utilizzata per ottimizzare le prestazioni di A*. Il principale vantaggio di IDA* risiede nell'uso di memoria lineare, a differenza di A*, che può richiedere uno spazio esponenziale nel peggiore dei casi. Tuttavia, va notato che IDA* utilizza una quantità limitata di memoria, che potrebbe essere sfruttata per migliorare le prestazioni in termini di tempo.
+**DA CAMBIARE**
+scrivere roba del fatto che la complessita di ida* seppur ha la stessa big o notation di a* in verita in termini reali e' piu lenta perche ripassa piu volte su stessi nodi yada yada
 
 ### Beam search
 L'algoritmo beam search adotta una strategia di ricerca in ampiezza per costruire il suo albero di ricerca. Ad ogni livello di profondità dell'albero, l'algoritmo genera tutti i successori dei nodi correnti, organizzandoli in modo tale che i valori della funzione euristica siano disposti in ordine crescente. Tuttavia, a differenza della best-first search, beam search salva solo un numero predefinito, indicato come "beam width", di stati "migliori" per ogni livello. Maggiore è l'ampiezza predefinita, minore sarà il numero di stati esclusi dalla ricerca. In teoria, impostando l'ampiezza a infinito nessuno stato verrebbe escluso e il comportamento dell'algoritmo sarebbe identico a quello di una best-first search. Limitare l'ampiezza massima predefinita aiuta a controllare i requisiti di memoria per l'esecuzione di questa ricerca. Tuttavia, l'algoritmo non offre garanzie di completezza o ottimalità della soluzione.
