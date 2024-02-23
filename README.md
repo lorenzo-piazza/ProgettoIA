@@ -2,8 +2,7 @@
 ## Componenti del gruppo
 - **Masri Omar** (879237)
 - **Piazza Lorenzo** (886010)
-## Problema
-Gr1 dune buggy grid Dimitri Ognibene
+## Problema - [Gr1] dune buggy grid
 M veicoli occupano caselle da (1,1) a (n,1) di una n×n griglia. I veicoli devono essere spostati nella fila superiore ma in ordine inverso; quindi il veicolo i che inizia in (i,1) deve finire in (n−i+1,n). Ad ogni passo temporale, ognuno degli M veicoli può muoversi di una casella in alto, in basso, a sinistra o a destra o rimanere fermi; ma se un veicolo rimane fermo, un altro veicolo adiacente (ma non più di uno) può saltarci sopra e fare uno spostamento maggiore. Due veicoli non possono occupare la stessa casella.
 Rispondere alle seguenti domande:
 - Calcolare la dimensione dello spazio degli stati in funzione di n e M.
