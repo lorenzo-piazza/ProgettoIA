@@ -114,3 +114,7 @@ La ricerca beam limita la dimensione della frontiera. L'approccio più semplice 
 
 ### Greedy search
 La ricerca greedy è una forma di best-first search che espande prima il nodo con il valore della funzione di valutazione più basso, ovvero il nodo che sembra essere più vicino all'obiettivo, sulla base del fatto che ciò probabilmente porterà rapidamente a una soluzione. Pertanto, la funzione di valutazione $f(n) = h(s)$ con $h(s)$ una funzione euristica che da una stima del costo del cammino minimo da s al goal.
+
+## Codice
+Per testare il codice utilizzare file tests.py
+Il codice e' stato testato su python 3.11.7 e su pypy3 7.3.15 (python 3.10.13)
