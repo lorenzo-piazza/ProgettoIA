@@ -83,14 +83,20 @@ Definiamo un algoritmo:
 - **Completo** quando trova sempre una soluzione (se esiste)
 
 ### A*
-A* è un algoritmo di ricerca informata.
-A* utilizza come funzione di valutazione $f(n)=g(n) + h(s)$ dove 
-$g(n)$ è il path cost dallo stato iniziale fino allo stato n (stato attuale) 
-e $h(s)$ è una funzione euristica che da una stima utile a capire dove si trova il goal.
-Quindi A* andrà ad espandere prima i nodi con funzione di valutazione minore
+L'algoritmo A* è un algoritmo di ricerca informata utilizzato per la ricerca su grafi al fine di individuare un percorso ottimale da un nodo iniziale a un nodo obiettivo. Basandosi su una tecnica chiamata "stima euristica", valuta e classifica ogni nodo in base a una stima della migliore strada che passa attraverso quel nodo. L'algoritmo A* segue questa stima euristica per determinare l'ordine di visita dei nodi durante la ricerca. È considerato un esempio di ricerca best-first.
+A* utilizza come funzione di valutazione $f(n)=g(n) + h(s)$ dove:
+- $g(n)$ è il path cost dallo stato iniziale fino allo stato n (stato attuale) 
+- $h(s)$ è una funzione euristica che da una stima utile a capire dove si trova il goal.
+
 ### IDA*
+Iterative deepening A* (nota anche con l'acronimo IDA*) è un algoritmo euristico introdotto da Richard Korf nel 1985. Il suo scopo è quello di trovare il percorso minimo da un nodo iniziale a ciascuno dei nodi soluzione in un grafo pesato.
+
+Questo algoritmo rappresenta una variante dell'iterative deepening depth-first search (ricerca in profondità con incremento iterativo) utilizzata per ottimizzare le prestazioni di A*. Il principale vantaggio di IDA* risiede nell'uso di memoria lineare, a differenza di A*, che può richiedere uno spazio esponenziale nel peggiore dei casi. Tuttavia, va notato che IDA* utilizza una quantità limitata di memoria, che potrebbe essere sfruttata per migliorare le prestazioni in termini di tempo.
 
 ### Beam search
+L'algoritmo beam search adotta una strategia di ricerca in ampiezza per costruire il suo albero di ricerca. Ad ogni livello di profondità dell'albero, l'algoritmo genera tutti i successori dei nodi correnti, organizzandoli in modo tale che i valori della funzione euristica siano disposti in ordine crescente. Tuttavia, a differenza della best-first search, beam search salva solo un numero predefinito, indicato come "beam width", di stati "migliori" per ogni livello. Maggiore è l'ampiezza predefinita, minore sarà il numero di stati esclusi dalla ricerca. In teoria, impostando l'ampiezza a infinito nessuno stato verrebbe escluso e il comportamento dell'algoritmo sarebbe identico a quello di una best-first search. Limitare l'ampiezza massima predefinita aiuta a controllare i requisiti di memoria per l'esecuzione di questa ricerca. Tuttavia, l'algoritmo non offre garanzie di completezza o ottimalità della soluzione.
+
+L'ampiezza può anche essere resa variabile. Un approccio possibile consiste nel far partire l'algoritmo con ampiezza impostata al valore minimo e, in caso di mancata individuazione di una soluzione, aumentare gradualmente il valore ad ogni nuova esecuzione.
 
 ROBE IN PIù
 Sistema definizione di C
